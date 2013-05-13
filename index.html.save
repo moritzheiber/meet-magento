@@ -16,8 +16,7 @@
 
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
-		<!-- <link rel="stylesheet" href="css/icons.css"> -->
-		<link rel="stylesheet" href="css/weloveiconfonts.css">
+		<link rel="stylesheet" href="css/icons.css">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -40,22 +39,14 @@
 					<h1>magento and redis</h1>
 					<p>or</p>
 					<h2>How to quadruple Magento's performance in under 10 minutes</h2>
-					<aside class="notes">
-						<p>What is this all about?</p>
-						<p>Who am I? Who is my company? How long have we been using Magento/Redis?</p>
-						<p>Segway!</p>							
-					</aside>
 				</section>
 				<section>
-					<h2>Redis?</h2>
-					<blockquote class="fragment" style="font-size:larger;" cite="http://redis.io">Redis is an open source, BSD licensed, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets.</blockquote>
-					<aside class="notes">
-						<p>What is the general concept of a key-value store and what is NoSQL?<br/>
-						What is Redis why is Redis a better alternative for caching Magento than Memcache?<br/>
-						Redis takes a different approach to storing data in key-value form<br/>
-						Complex data types are possible, like strings, arrays and even associations<br/>
-						Operations are still really really fast thanks to indexes and simple internal logic<br/>
-					</aside>
+					<section>
+						<h2>Redis?</h2>
+					</section>
+					<section>
+						<blockquote style="font-size:larger;" cite="http://redis.io">Redis is an open source, BSD licensed, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets.</blockquote>
+					</section>
 				</section>
 				<section>
 					<h2>Memcache for everything</h2>
@@ -126,9 +117,9 @@
 				</section>
 				<section>
 					<h1>Thank you for listening!</h1><br />
-					<h3><span class="fontawesome-twitter"></span>&nbsp;@moritzheiber</h3>
-					<h3><span class="fontawesome-github"></span>&nbsp;github.com/mysportgroup</h3>
-					<h3><span class="fontawesome-envelope"></span>&nbsp;m.heiber@mysportgroup.de</h3>
+					<h3><a style="color:black; font-size:75%;" href="#" data-icon="twitter"></a>&nbsp;moritzheiber</h3>
+					<h3><a style="color:black; font-size:75%;" href="#" data-icon="github"></a>&nbsp;github.com/mysportgroup</h3>
+					<h3><a style="color:black; font-size:75%;" href="#" data-icon="email"></a>&nbsp;m.heiber@mysportgroup.de</h3>
 					<p style="position:absolute; top:10%; left:-10%;">#nginx</p>
 					<p style="position:absolute; top:15%; right:-10%;">#redis</p>
 					<p style="position:absolute; top:60%; left:-5%;">#xcache</p>
