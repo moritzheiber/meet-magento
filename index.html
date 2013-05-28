@@ -47,6 +47,17 @@
 					</aside>
 				</section>
 				<section>
+					<h2>Making Magento run faster</h2>
+					<aside class="notes">
+						<p>
+							Magento itself will always be slow -> PHP, EAV, huge structure behind it<br />
+							General consensus is to build caches/infrastructure around Magento<br />
+							Examples: Full page cache, varnish, APC/xcache
+							Redis can be a huge contributor to this infrastucture .. AND BEYOND							
+						</p>
+					</aside>
+				</section>
+				<section>
 					<h2>Redis?</h2>
 					<blockquote class="fragment" style="font-size:larger;" cite="http://redis.io">Redis is an open source, BSD licensed, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets.</blockquote>
 					<aside class="notes">
@@ -80,6 +91,56 @@
 				</section>
 				<section>
 					<section>
+						<h2>Redis integration</h2>
+					</section>
+					<section>
+						<h2>Sessions</h2>
+						<p><a href="https://github.com/colinmollenhour/Cm_RedisSession">https://github.com/colinmollenhour/Cm_RedisSession</a></p>
+						<aside class="notes">
+							<p>A lot of control over what is done with sessions<br/>
+								Can use compression for really large environments (isn't needed on small systems)<br />
+								Locking mechanism prevents 503s<br />
+								Flexible fallback mechanism (redis->mysql->files)<br />
+								Expiration build in (redis feature)<br />
+								When no more memory is available clears oldest set (redis feature)
+							</p>
+						</aside>
+					</section>
+					<section>
+						<h2>Cache</h2>
+						<p><a href="https://github.com/colinmollenhour/Cm_Cache_Backend_Redis">https://github.com/colinmollenhour/Cm_Cache_Backend_Redis</a></p>
+						<aside class="notes">
+							<p>
+								The largest performance gain is here<br />
+								Able to ues custom tags/options for cache objects<br />
+								In production use at mysportgroup since over 15 months<br />
+								Fast, stable, reliable (as is redis)<br />
+								Compression supported as well, can use phpredis, uses credis if not available<br />
+								Unittests!<br />
+								Same last two benefits as sessions because of redis feature<br />
+							</p>
+						</aside>
+					</section>
+					<section>
+						<h2>But .. it's even easier</h2>
+						<p class="fragment"><a href="https://github.com/nicolasff/phpredis#php-session-handler">https://github.com/nicolasff/phpredis</a></p>
+						<pre class="fragment"><code data-trim>
+&lt;global>
+  &#91;...&#93;
+  &lt;session_save>&lt;![CDATA[redis]]>&lt;/session_save>
+  &lt;session_save>&lt;![CDATA[tcp://redis-live:6379]]>&lt;/session_save_path>
+&lt;/global>
+      					</code></pre>
+      					<aside class="notes">
+      					  <p>Puts only Magento sessions in redis</br>
+      					  	 Uses db 0 by default</br>
+      					  	 Fastest integration possible</br>
+      					  	 For more control use the other module</p>
+      					</aside>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h2>Disclaimer</h2>
 					</section>
 					<section>
@@ -95,18 +156,7 @@
 				<section><h2>Benchmarks go here</h2></section>
 				<section>
 					<section>
-						<h2>HOWTO</h2>
-					</section>
-					<section>
-						<h2>Add session module</h2>
-					</section>
-					<section>
-						<h2>Add caching module</h2>
-					</section>
-				</section>
-				</section>
-					<section>
-						<section><h2>The impact?</h2>
+						<h2>The impact?</h2>
 					</section>
 					<section>
 						<img width="721" height="369" src="img/redis-rocks.png" alt="Redis rocks">
@@ -122,6 +172,25 @@
 						<h3 class="fragment">Binary code caching</h3>
 						<h3 class="fragment">Logfiles in memory</h3>
 						<p class="fragment">Hint: Try logstash/elasticsearch/kibana</p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<img src="img/soon.jpg" alt="Soon..">
+						<p style="font-size:12pt">&copy; knowyourmeme.com</p>
+					</section>
+					<section><h2>Redis database handler</h2>
+						<p>Store stuff in Redis through Magento directly</p>
+						<p>You build the structure, Redis stores it for you</p>
+						<p>ETA: Coming weeks (ready when it's done &#128527;)</p>
+						<aside class="notes">
+							<p>
+								Huge amounts of vouchers -> McDonalds<br />
+								What can you do with it? -> replace flat tables (Cart)<br />
+								Integrate message queuing (resque, sidekiq) -> loosely coupled systems!<br />
+								Anything that you can serialize and which needs to be stored uber-fast!
+							</p>
+						</aside>
 					</section>
 				</section>
 				<section>
@@ -459,6 +528,7 @@ function linkify( selector ) {
 				progress: true,
 				history: true,
 				center: true,
+				rollingLinks: false,
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
