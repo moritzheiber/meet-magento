@@ -41,9 +41,11 @@
 					<p>or</p>
 					<h2>How to quadruple Magento's performance in under 10 minutes</h2>
 					<aside class="notes">
-						<p>What is this all about?</p>
-						<p>Who am I? Who is my company? How long have we been using Magento/Redis?</p>
-						<p>Segway!</p>							
+						<p>What is this all about?<br />
+							Why is Magento slow and how to speed it up
+							This is not about memcache -> no "memcache is bad" but "redis is good, too"
+							Who am I? Who is my company? How long have we been using Magento/Redis?<br />
+							Segway!<br />						
 					</aside>
 				</section>
 				<section>
@@ -52,7 +54,9 @@
 						<p>
 							Magento itself will always be slow -> PHP, EAV, huge structure behind it<br />
 							General consensus is to build caches/infrastructure around Magento<br />
-							Examples: Full page cache, varnish, APC/xcache
+							Examples: Full page cache, varnish, APC/xcache<br />
+							Generally, you will want Magento to receive the least amount of actual hits<br />
+							Whatever hits Magento hits all of your system's components (I/O, DB, PHP interpreter/FPM etc.)<br />
 							Redis can be a huge contributor to this infrastucture .. AND BEYOND							
 						</p>
 					</aside>
@@ -66,6 +70,7 @@
 						Redis takes a different approach to storing data in key-value form<br/>
 						Complex data types are possible, like strings, arrays and even associations<br/>
 						Operations are still really really fast thanks to indexes and simple internal logic<br/>
+						So why Redis?
 					</aside>
 				</section>
 				<section>
@@ -77,21 +82,52 @@
 					</section>
 					<section>
 						<h2>Speed depends on I/O and database performance</h2>
+						<aside class="notes">
+							<p>
+								Therefore also on optimized SQL related code! -> example: PDP
+							</p>
+						</aside>
 					</section>
 					<section>
 						<h2>Magento is very slow without caching</h2>
 						<p class="fragment">(any web app is really)</p>
+						<aside>
+							<p>
+								Any web app really is<br />
+								Just give it a try and see how slow it is -> no cache vs. file cache -> huge difference							
+							</p>
+						</aside>
 					</section>
 					<section>
 						<h2>Magento (at best) uses MySQL for caching purposes out of the box</h2>
+						<aside class="notes">
+							<p>
+								Example: Sessions
+								Other example (not as fitting): Indexing
+							</p>
+						</aside>
 					</section>
 					<section>
 						<h2>PHP is not a performance hugger</h2>
+						<aside class="notes">
+							<p>
+								Generally regarded as being slower than Ruby and/or Pythong<br />
+								A lot faster alternatives out there<br />
+							</p>
+						</aside>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h2>Redis integration</h2>
+						<aside class="notes">
+							<p>
+								Redis is childishly easy to setup -> Debian, dotdeb<br />
+								Let it run, configure at runtime<br />
+								Memory dependend, socket connection should be preferred -> not possible in a distributed environment<br />
+								
+							</p>
+						</aside>
 					</section>
 					<section>
 						<h2>Sessions</h2>
@@ -115,9 +151,9 @@
 								Able to ues custom tags/options for cache objects<br />
 								In production use at mysportgroup since over 15 months<br />
 								Fast, stable, reliable (as is redis)<br />
-								Compression supported as well, can use phpredis, uses credis if not available<br />
+								Compression supported as well, can use phpredis (which we'll talk about in just a second), uses credis if not available<br />
 								Unittests!<br />
-								Same last two benefits as sessions because of redis feature<br />
+								Same last two benefits as sessions because of redis features<br />
 							</p>
 						</aside>
 					</section>
@@ -125,17 +161,18 @@
 						<h2>But .. it's even easier</h2>
 						<p class="fragment"><a href="https://github.com/nicolasff/phpredis#php-session-handler">https://github.com/nicolasff/phpredis</a></p>
 						<pre class="fragment"><code data-trim>
-&lt;global>
+&lt;global&gt;
   &#91;...&#93;
-  &lt;session_save>&lt;![CDATA[redis]]>&lt;/session_save>
-  &lt;session_save>&lt;![CDATA[tcp://redis-live:6379]]>&lt;/session_save_path>
-&lt;/global>
+  &lt;session_save&gt;![CDATA[redis]]&lt;/session_save&gt;
+  &lt;session_save&gt;![CDATA[&lt;socket://|tcp://&gt;&lt;socket|ip&gt;&lt;:tcp-port&gt;]]&lt;/session_save_path&gt;
+&lt;/global&gt;
       					</code></pre>
       					<aside class="notes">
-      					  <p>Puts only Magento sessions in redis</br>
-      					  	 Uses db 0 by default</br>
-      					  	 Fastest integration possible</br>
-      					  	 For more control use the other module</p>
+      					  <p>Usually configured in system wide basis via php.conf<br />
+      					  	 Putting configuration in global means it puts only Magento sessions in redis (preferable maybe?)<br />
+      					  	 Uses db 0 by default<br />
+      					  	 Fastest integration possible<br />
+      					  	 For more control use the other module<br />
       					</aside>
 					</section>
 				</section>
@@ -179,10 +216,10 @@
 						<img src="img/soon.jpg" alt="Soon..">
 						<p style="font-size:12pt">&copy; knowyourmeme.com</p>
 					</section>
-					<section><h2>Redis database handler</h2>
-						<p>Store stuff in Redis through Magento directly</p>
-						<p>You build the structure, Redis stores it for you</p>
-						<p>ETA: Coming weeks (ready when it's done &#128527;)</p>
+					<section><h2>Redis database handler</h2><ul class="fragment">
+						<li>Store stuff in Redis through Magento directly</li>
+						<li>You build the structure, Redis stores it for you</li>
+						<li>ETA: Coming weeks (ready when it's done &#128527;)</li>
 						<aside class="notes">
 							<p>
 								Huge amounts of vouchers -> McDonalds<br />
